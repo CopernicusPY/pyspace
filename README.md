@@ -21,7 +21,7 @@ from pyspace import APOD
 ```
 After that, initialize the module while specifying the API_KEY(Can be None since default is "DEMO_KEY")
 ```py
-apod = APOD("API_KEY") # Specify api key from https://api.nasa.gov/
-apod = APOD() # Use demo key
+apod = APOD("API_KEY") # Initialize module using api key from https://api.nasa.gov/
+apod = APOD() # Initialize module using demo key
 ```
 I am too busy to write docs rn so just use your IDE to check out and play with all the different methods :p
