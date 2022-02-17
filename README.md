@@ -17,11 +17,11 @@ This wrapper currently supports Earth API, APOD(Astronomical Pictures of the Day
 Firstly, import the module. (Keep in mind the setup of this repo is not that good (will be changed soon) so you install all the different modules for all the different apis. 
 ```py
 #Import APOD Module Example
-from pyspace import APOD
+from pyspace import PySpace
 ```
 After that, initialize the module while specifying the API_KEY(Can be None since default is "DEMO_KEY")
 ```py
-apod = APOD("API_KEY") # Initialize module using api key from https://api.nasa.gov/
-apod = APOD() # Initialize module using demo key
+apod = PySpace("API_KEY") # Initialize module using api key from https://api.nasa.gov/
+apod = PySpace() # Initialize module using demo key
 ```
 I am too busy to write docs rn so just use your IDE to check out and play with all the different methods :p
