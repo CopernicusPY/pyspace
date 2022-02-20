@@ -1,4 +1,4 @@
-import requests, datetime, colorama
+import requests, datetime, colorama, turtle, time
 
 class PySpace:
     """
@@ -145,9 +145,84 @@ class PySpace:
             self.limit_remaining = resp.headers['X-RateLimit-Remaining']
             print(colorama.Fore.GREEN + f"[INFO] Request completed\n[INFO] Status Code: {resp.status_code}\n[INFO] Response:\n{colorama.Fore.WHITE + resp.text}")
             return resp.json()['photos']
-#Tests 
+    def track_iss(self, live=False, w=1280,h=720):
+        """
+        Track the current ISS(International Space Station) and get the names of the Astronauts that are currently on-board
+        
+        Parameters
+        ==========
+        live: bool, default -> False
+            When True, shows the live ISS location on a map picture.
 
+        Raises
+        ======
+        HTTPError
+           Raised if response fails. (Status code != 200)
+
+        Returns
+        =======
+        dict
+            Contains a list with the names of the astronauts  that are currently on board, and the **Current** latitude and the longtitude of the ISS.
+
+        """
+        result = {
+            "people_on_board": []
+        }
+        resp = requests.get("http://api.open-notify.org/iss-now.json")
+        #Error Handling 
+
+        ppl_resp = requests.get("http://api.open-notify.org/astros.json")
+
+        if  ppl_resp.status_code != 200:
+            print(colorama.Fore.RED+f"[Error] Status Code: {ppl_resp.status_code} ({ppl_resp.reason})\n[ERROR] Response: {ppl_resp.text}")
+            raise requests.exceptions.HTTPError(ppl_resp.reason)
+
+        if resp.status_code != 200:
+            print(colorama.Fore.RED+f"[Error] Status Code: {resp.status_code} ({resp.reason})\n[ERROR] Response: {resp.text}")
+            raise requests.exceptions.HTTPError(resp.reason)
+
+        elif  ppl_resp.status_code == 200 and resp.status_code == 200:
+            for person  in ppl_resp.json()['people']:
+                result["people_on_board"].append(person['name'])
+
+            result["longitude"] = float(resp.json()["iss_position"]["longitude"])
+            result["latitude"] = float(resp.json()["iss_position"]["latitude"])
+            print(colorama.Fore.GREEN + f"[INFO] Request completed\n[INFO] Status Code: {resp.status_code}\n[INFO] Response:\n{colorama.Fore.WHITE + str(result)}")
+        
+        if live:
+            #Setup Display
+            screen = turtle.Screen()
+            screen.setup(w, h)
+            screen.setworldcoordinates(-180,-90, 180,90)
+            
+            screen.bgpic("./pyspace/map.gif")
+            screen.register_shape("./pyspace/ISS_Point.gif")
+            
+            iss_img = turtle.Turtle("./pyspace/ISS_Point.gif")
+            iss_img.setheading(45)
+            iss_img.penup()
+
+            pen = turtle.Turtle()
+            pen.pensize(3)
+            pen.pencolor("green")
+            pen.penup()
+
+            while True:
+                resp = requests.get("http://api.open-notify.org/iss-now.json")
+                lat, lon = float(resp.json()["iss_position"]["latitude"]), float(resp.json()["iss_position"]["longitude"])
+                iss_img.goto(lat,lon)
+
+                print(lat,lon)
+
+                pen.setposition(lat, lon)
+                pen.pendown()
+                time.sleep(2)
+
+        return result
+
+# Tests
 my_apod = PySpace() #Initialize with DEMO_KEY
-my_apod.mars_picture(rover="spirit",sol=1000)
+
+# my_apod.track_iss(True) <- Track the live ISS position while displaying on a map img. 
+# my_apod.mars_picture(rover="spirit",sol=1000)
 # my_apod.picture_of_the_day(date="2022-02-05")
-print(my_apod.limit_remaining)
