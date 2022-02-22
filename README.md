@@ -24,3 +24,6 @@ After that, initialize the module while specifying the API_KEY(Can be None since
 apod = PySpace("API_KEY") # Initialize module using api key from https://api.nasa.gov/
 apod = PySpace() # Initialize module using demo key
 ```
+For usage examples check out the [examples file](examples.py)
+
+# PySpace ISS Tracking
