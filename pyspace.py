@@ -1,4 +1,4 @@
-import requests, datetime, colorama, turtle, time
+import requests, datetime, colorama, json
 
 class PySpace:
     """
@@ -151,8 +151,8 @@ class PySpace:
         
         Parameters
         ==========
-        live: bool, default -> False
-            When True, shows the live ISS location on a map picture.
+        display_on_screen: bool, default -> False
+            When True, shows the **live** ISS location on a map picture.
 
         Raises
         ======
@@ -162,11 +162,12 @@ class PySpace:
         Returns
         =======
         dict
-            Contains a list with the names of the astronauts  that are currently on board, and the **Current** latitude and the longtitude of the ISS.
+            Contains a list with the names of the astronauts  that are currently on board, and a list with tuples of the latitude and the longtitude of the ISS.
 
         """
         result = {
-            "people_on_board": []
+            "people_on_board": [],
+            "live_position": []
         }
         resp = requests.get("http://api.open-notify.org/iss-now.json")
         #Error Handling 
@@ -190,39 +191,58 @@ class PySpace:
             print(colorama.Fore.GREEN + f"[INFO] Request completed\n[INFO] Status Code: {resp.status_code}\n[INFO] Response:\n{colorama.Fore.WHITE + str(result)}")
         
         if live:
-            #Setup Display
-            screen = turtle.Screen()
-            screen.setup(w, h)
-            screen.setworldcoordinates(-180,-90, 180,90)
-            
-            screen.bgpic("./pyspace/map.gif")
-            screen.register_shape("./pyspace/ISS_Point.gif")
-            
-            iss_img = turtle.Turtle("./pyspace/ISS_Point.gif")
-            iss_img.setheading(45)
-            iss_img.penup()
-
-            pen = turtle.Turtle()
-            pen.pensize(3)
-            pen.pencolor("green")
-            pen.penup()
-
             while True:
+                #Get live position of ISS 
                 resp = requests.get("http://api.open-notify.org/iss-now.json")
                 lat, lon = float(resp.json()["iss_position"]["latitude"]), float(resp.json()["iss_position"]["longitude"])
-                iss_img.goto(lat,lon)
-
-                print(lat,lon)
-
-                pen.setposition(lat, lon)
-                pen.pendown()
-                time.sleep(2)
+                result["live_position"].append((lat, lon))
+                print(result['live_position'])
 
         return result
+    def mars_weather(self, version=1.0):
+        """
+        Returns per Sol data for each of the last seven available Sols.
 
-# Tests
-my_apod = PySpace() #Initialize with DEMO_KEY
+        Parameters
+        ==========
+        version: integer, default -> 1.0
+            Version of the Insights(Mars Weather Data) API
+        Raises
+        ======
+        HTTPError
+            Raised if response fails. (Status code != 200)
+        TypeError
+            Raised if <version> argument is not an integer
+        Returns
+        =======
+        list
+            List object containing dictionaries with data for each sol.(sol, average temp, min temp and max temp)
 
-# my_apod.track_iss(True) <- Track the live ISS position while displaying on a map img. 
-# my_apod.mars_picture(rover="spirit",sol=1000)
-# my_apod.picture_of_the_day(date="2022-02-05")
+        """
+        params = {
+            "api_key":self.api_key,
+            "ver":version,
+            "feedtype": "json"
+        }
+        resp = requests.get("https://api.nasa.gov/insight_weather/", params=params)
+        if not isinstance(version, int):
+            raise TypeError("API Version must be an integer.")
+        
+        if resp.status_code != 200:
+            print(colorama.Fore.RED+f"[Error] Status Code: {resp.status_code} ({resp.reason})\n[ERROR] Response: {resp.text}")
+            raise requests.exceptions.HTTPError(resp.reason)
+        else:
+            sols = resp.json()['sol_keys']
+            result = []
+            for sol in sols:
+                sol_info = resp[sol].get('AT')
+                
+                result.append({
+                    "sol":sol,
+                    "average_temperature":sol_info['av'],
+                    "minimum_temperature": sol_info['mn'],
+                    "maximum_temperature": sol_info['mx']
+                })
+
+            print(colorama.Fore.GREEN + f"[INFO] Request completed\n[INFO] Response:\n{colorama.Fore.WHITE + str(result)}")
+            return result
