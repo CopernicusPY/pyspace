@@ -100,7 +100,7 @@ class PySpace:
         if resp.status_code != 200:
             print(colorama.Fore.RED +
                   f"[Error] Status Code: {resp.status_code} ({resp.reason})\n[ERROR] Response: {resp.text}")
-            #raise requests.exceptions.HTTPError(resp.reason)
+            raise requests.exceptions.HTTPError(resp.reason)
 
         else:
             self.limit_remaining = resp.headers['X-RateLimit-Remaining']
