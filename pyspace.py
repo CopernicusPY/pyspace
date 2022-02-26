@@ -1,4 +1,9 @@
-import requests, datetime, colorama, json
+import requests
+import datetime
+import colorama
+import numpy, io, cv2
+from PIL import Image
+
 
 class PySpace:
     """
@@ -8,7 +13,7 @@ class PySpace:
     ==========
         api_key: string, default -> DEMO_KEY
         API Key received after registration on https://api.nasa.gov/. If None, a limited-access DEMO_KEY is used.
-    
+
     Attributes
     ==========
     api_key: string, default -> DEMO_KEY
@@ -20,13 +25,26 @@ class PySpace:
     =======
     picture_of_the_day
         Returns data for the NASA APOD (Astronomy Picture of the Day)
-    
+    mars_picture
+        Returns a mars picture that matches the given data
+    track_iss
+        returns a tuple of the iss position
+    mars_weather
+        Returns a list containing dictionaries with the temperature of each martian day (sol)
+    earth_weather
+        Description Not available as of now
+    earth_imagery
+        Description Not available as of now
+
+
     """
-    def __init__(self, api_key="DEMO_KEY"):
+
+    def __init__(self, api_key="DEMO_KEY", weather_api_key=None):
         colorama.init(True)
 
-        self.api_key = api_key 
-        self.limit_remaining = None 
+        self.api_key = api_key
+        self.weather_api_key = weather_api_key
+        self.limit_remaining = None
         print("""
 ██████╗░██╗░░░██╗░██████╗██████╗░░█████╗░░█████╗░███████╗
 ██╔══██╗╚██╗░██╔╝██╔════╝██╔══██╗██╔══██╗██╔══██╗██╔════╝
@@ -58,7 +76,7 @@ class PySpace:
         =======
         dict 
             Dictionary object of JSON data returned from API.
-        
+
         Usage Examples
         ==============
 
@@ -68,24 +86,29 @@ class PySpace:
         >>> apod.picture_of_the_day('2022-01-01', hd=True) 
         """
         params = {
-            "api_key":self.api_key,
-            "date":date,
-            "hd":hd,
-            "count":count
+            "api_key": self.api_key,
+            "date": date,
+            "hd": hd,
+            "count": count
         }
         if hd is not None:
             if not isinstance(hd, bool):
-                raise TypeError(colorama.Fore.RED+"<hd> parameter must be a Boolean (True - False)")
-        resp = requests.get("https://api.nasa.gov/planetary/apod", params=params)
+                raise TypeError(
+                    colorama.Fore.RED+"<hd> parameter must be a Boolean (True - False)")
+        resp = requests.get(
+            "https://api.nasa.gov/planetary/apod", params=params)
         if resp.status_code != 200:
-            print(colorama.Fore.RED+f"[Error] Status Code: {resp.status_code} ({resp.reason})\n[ERROR] Response: {resp.text}")
-            raise requests.exceptions.HTTPError(resp.reason)
+            print(colorama.Fore.RED +
+                  f"[Error] Status Code: {resp.status_code} ({resp.reason})\n[ERROR] Response: {resp.text}")
+            #raise requests.exceptions.HTTPError(resp.reason)
+
         else:
             self.limit_remaining = resp.headers['X-RateLimit-Remaining']
-            print(colorama.Fore.GREEN + f"[INFO] Request completed\n[INFO] Status Code: {resp.status_code}\n[INFO] Response:\n{colorama.Fore.WHITE + resp.text}")
-            return resp.json()
-    
-    def mars_picture(self,rover:str="Curiosity", sol=None,earth_date:str=None, camera:str="all", page=1):
+            print(colorama.Fore.GREEN +
+                  f"[INFO] Request completed\n[INFO] Status Code: {resp.status_code}\n[INFO] Response:\n{colorama.Fore.WHITE + resp.text}")
+        return resp.json()
+
+    def mars_picture(self, rover: str = "Curiosity", sol=None, earth_date: str = None, camera: str = "all", page=1):
         """
         Returns data for the Mars Picture that matches the given data.
 
@@ -116,15 +139,17 @@ class PySpace:
         list 
             List containing dictionaries with the JSON data from the Mars Rover API
         """
-        
-        params =  {
-            "api_key":self.api_key,
-            "page":page
+
+        params = {
+            "api_key": self.api_key,
+            "page": page
         }
         if rover.lower() not in ('curiosity', 'opportunity', 'spirit', 'perseverance'):
-            raise ValueError(colorama.Fore.RED+"<rover> must be one of the following: Curiosity, Opportunity, Spirit, Perseverance")
+            raise ValueError(
+                colorama.Fore.RED+"<rover> must be one of the following: Curiosity, Opportunity, Spirit, Perseverance")
         if earth_date != None and sol != None:
-            raise TypeError(colorama.Fore.RED+"Bad combination. Either <earth_date> or <sol> can be specified")
+            raise TypeError(
+                colorama.Fore.RED+"Bad combination. Either <earth_date> or <sol> can be specified")
         if camera != "all":
             params['camera'] = camera
         if sol != None:
@@ -136,19 +161,23 @@ class PySpace:
                 earth_date = earth_date.strftime("%Y-%m-%d")
             params['earth_date'] = earth_date
 
-        resp = requests.get(f"https://api.nasa.gov/mars-photos/api/v1/rovers/{rover}/photos", params=params)
+        resp = requests.get(
+            f"https://api.nasa.gov/mars-photos/api/v1/rovers/{rover}/photos", params=params)
 
         if resp.status_code != 200:
-            print(colorama.Fore.RED+f"[Error] Status Code: {resp.status_code} ({resp.reason})\n[ERROR] Response: {resp.text}")
+            print(colorama.Fore.RED +
+                  f"[Error] Status Code: {resp.status_code} ({resp.reason})\n[ERROR] Response: {resp.text}")
             raise requests.exceptions.HTTPError(resp.reason)
         else:
             self.limit_remaining = resp.headers['X-RateLimit-Remaining']
-            print(colorama.Fore.GREEN + f"[INFO] Request completed\n[INFO] Status Code: {resp.status_code}\n[INFO] Response:\n{colorama.Fore.WHITE + resp.text}")
+            print(colorama.Fore.GREEN +
+                  f"[INFO] Request completed\n[INFO] Status Code: {resp.status_code}\n[INFO] Response:\n{colorama.Fore.WHITE + resp.text}")
             return resp.json()['photos']
-    def track_iss(self, live=False, w=1280,h=720):
+
+    def track_iss(self, live=False, w=1280, h=720):
         """
         Track the current ISS(International Space Station) and get the names of the Astronauts that are currently on-board
-        
+
         Parameters
         ==========
         display_on_screen: bool, default -> False
@@ -170,35 +199,41 @@ class PySpace:
             "live_position": []
         }
         resp = requests.get("http://api.open-notify.org/iss-now.json")
-        #Error Handling 
+        # Error Handling
 
         ppl_resp = requests.get("http://api.open-notify.org/astros.json")
 
-        if  ppl_resp.status_code != 200:
-            print(colorama.Fore.RED+f"[Error] Status Code: {ppl_resp.status_code} ({ppl_resp.reason})\n[ERROR] Response: {ppl_resp.text}")
+        if ppl_resp.status_code != 200:
+            print(colorama.Fore.RED +
+                  f"[Error] Status Code: {ppl_resp.status_code} ({ppl_resp.reason})\n[ERROR] Response: {ppl_resp.text}")
             raise requests.exceptions.HTTPError(ppl_resp.reason)
 
         if resp.status_code != 200:
-            print(colorama.Fore.RED+f"[Error] Status Code: {resp.status_code} ({resp.reason})\n[ERROR] Response: {resp.text}")
+            print(colorama.Fore.RED +
+                  f"[Error] Status Code: {resp.status_code} ({resp.reason})\n[ERROR] Response: {resp.text}")
             raise requests.exceptions.HTTPError(resp.reason)
 
-        elif  ppl_resp.status_code == 200 and resp.status_code == 200:
-            for person  in ppl_resp.json()['people']:
+        elif ppl_resp.status_code == 200 and resp.status_code == 200:
+            for person in ppl_resp.json()['people']:
                 result["people_on_board"].append(person['name'])
 
-            result["longitude"] = float(resp.json()["iss_position"]["longitude"])
+            result["longitude"] = float(
+                resp.json()["iss_position"]["longitude"])
             result["latitude"] = float(resp.json()["iss_position"]["latitude"])
-            print(colorama.Fore.GREEN + f"[INFO] Request completed\n[INFO] Status Code: {resp.status_code}\n[INFO] Response:\n{colorama.Fore.WHITE + str(result)}")
-        
+            print(colorama.Fore.GREEN +
+                  f"[INFO] Request completed\n[INFO] Status Code: {resp.status_code}\n[INFO] Response:\n{colorama.Fore.WHITE + str(result)}")
+
         if live:
             while True:
-                #Get live position of ISS 
+                # Get live position of ISS
                 resp = requests.get("http://api.open-notify.org/iss-now.json")
-                lat, lon = float(resp.json()["iss_position"]["latitude"]), float(resp.json()["iss_position"]["longitude"])
+                lat, lon = float(resp.json()["iss_position"]["latitude"]), float(
+                    resp.json()["iss_position"]["longitude"])
                 result["live_position"].append((lat, lon))
                 print(result['live_position'])
 
         return result
+
     def mars_weather(self, version=1.0):
         """
         Returns per Sol data for each of the last seven available Sols.
@@ -213,6 +248,7 @@ class PySpace:
             Raised if response fails. (Status code != 200)
         TypeError
             Raised if <version> argument is not an integer
+
         Returns
         =======
         list
@@ -220,29 +256,156 @@ class PySpace:
 
         """
         params = {
-            "api_key":self.api_key,
-            "ver":version,
+            "api_key": self.api_key,
+            "ver": version,
             "feedtype": "json"
         }
-        resp = requests.get("https://api.nasa.gov/insight_weather/", params=params)
-        if not isinstance(version, int):
-            raise TypeError("API Version must be an integer.")
-        
+        resp = requests.get(
+            "https://api.nasa.gov/insight_weather/", params=params)
+        if not isinstance(version, (int, float)):
+            raise TypeError("API Version must be an integer or a float.")
+
         if resp.status_code != 200:
-            print(colorama.Fore.RED+f"[Error] Status Code: {resp.status_code} ({resp.reason})\n[ERROR] Response: {resp.text}")
+            print(colorama.Fore.RED +
+                  f"[Error] Status Code: {resp.status_code} ({resp.reason})\n[ERROR] Response: {resp.text}")
             raise requests.exceptions.HTTPError(resp.reason)
         else:
             sols = resp.json()['sol_keys']
             result = []
             for sol in sols:
                 sol_info = resp[sol].get('AT')
-                
+
                 result.append({
-                    "sol":sol,
-                    "average_temperature":sol_info['av'],
-                    "minimum_temperature": sol_info['mn'],
-                    "maximum_temperature": sol_info['mx']
+                    "sol": sol,
+                    "average_temperature": float(sol_info['av'] - 32) * (5/9),
+                    "minimum_temperature": float(sol_info['mn'] - 32) * (5/9),
+                    "maximum_temperature": float(sol_info['mx']-32) * (5/9)
                 })
 
-            print(colorama.Fore.GREEN + f"[INFO] Request completed\n[INFO] Response:\n{colorama.Fore.WHITE + str(result)}")
+            print(colorama.Fore.GREEN +
+                  f"[INFO] Request completed\n[INFO] Response:\n{colorama.Fore.WHITE + str(result)}")
             return result
+
+    def earth_weather(self, location, ugroup="us", start_date='', end_date='', c_type="json"):
+        if self.weather_api_key is not None:
+            for i in [location, ugroup, start_date, end_date, c_type]:
+                if not isinstance(i, str):
+                    raise TypeError(f"Expected <class 'str'> got {type(i)}")
+                
+            params = {
+                "key": self.weather_api_key,
+                "unitGroup": ugroup,
+                "contentType": c_type,
+                "include": "days",
+
+            }
+
+            resp = requests.get(
+                f'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/{location}/{start_date}/{end_date}', params=params)
+            
+            if resp.status_code != 200:
+                print(colorama.Fore.RED +
+              f"[Error] Status Code: {resp.status_code} ({resp.reason})\n[ERROR] Response: {resp.text}")
+                raise requests.exceptions.HTTPError(resp.reason)
+            else:
+                print(colorama.Fore.GREEN +
+                  f"[INFO] Request completed\n[INFO] Response:\n{colorama.Fore.WHITE + str(resp.text)}")
+                return resp.json()
+
+        else:
+            print("No API Key")
+        #API_KEY = ZDJ7P2WBY2KEZ7A3LHNMDZGLK
+    def earth_imagery(self, lat, lon, dim=0.025, date=None,display=True, cloud_score=False, save_as=None):
+        """
+        Returns numpy array of pixel values for image that matches given data.
+
+
+        Parameters
+        ==========
+        lat: float/int, default -> n/a
+
+        lon: float/int, default -> n/a
+
+        dim: float/int, default -> 0.025
+
+        date: string, default -> None
+        
+        display: boolean, default -> True
+
+        cloud_score: boolean, default -> False
+
+        save_as: string, default -> None
+
+        Raises
+        ======
+        HTTPError
+            Raised if response fails. (Status code != 200)
+
+        TypeError
+            Raised if <cloud_score< is not boolean, 
+            Raised if <lat> is not an integer or float
+            Raised if <lon> >>>     >>>    >>> 
+            Raised if <dim> >>>     >>>    >>>
+            Raised if <date> is not a string representing a date in YYYY-MM-DD format or a datetime object
+        
+        ValueError
+            Raised if <lat> is out of range (-90 - 90)
+            Raise if <lon> is out of range (-180 - 180)
+
+        Returns
+        =======
+        tuple
+            tuple containing a numpy.ndarray with the pixel values of the matching image and the URL for the specified image
+        """
+        #Argument Error Handling
+        if not isinstance(cloud_score, bool):
+            raise TypeError('<cloud_score> must be boolean')
+        if not isinstance(lat, (int, float)):
+            raise TypeError('<lat> must be an int or float')
+        if not isinstance(lon, (int, (int,float))):
+            raise TypeError('<lon> must be an int or float')
+        if not isinstance(dim, (float, int)):
+            raise TypeError('<dim> must be a int or float')
+
+        if not -90 <= lat <= 90:
+            raise ValueError('latitudes range from -90 to 90')
+        if not -180 <= lon <= 180:
+            raise ValueError('longitudes range from -180 to 180')
+        if date is not None:
+            if not isinstance(date, (str, datetime.datetime)):
+                raise TypeError('date must be either a string representing a date in YYYY-MM-DD format or a datetime object')
+            if isinstance(date, datetime.datetime):
+                date = date.strftime('%Y-%m-%d')
+
+        params = {
+            'lon': lon,
+            'lat': lat,
+            'dim': dim,
+            'date': date,
+            'cloud_score': cloud_score,
+            'api_key': self.api_key
+        }
+
+        resp = requests.get("https://api.nasa.gov/planetary/earth/imagery",params=params)
+
+        if resp.status_code != 200:
+            print(colorama.Fore.RED + f"[Error] Status Code: {resp.status_code} ({resp.reason})\n[ERROR] Response: {resp.text}")
+            raise requests.exceptions.HTTPError(resp.reason)
+        else:
+            self.limit_remaining = resp.headers['X-RateLimit-Remaining']
+            print(colorama.Fore.GREEN +
+                f"[INFO] Request completed\n[INFO] Status Code: {resp.status_code}\n[INFO] Response URL: {colorama.Fore.WHITE + str(resp.url)}")
+            
+            
+            img = Image.open(io.BytesIO(resp.content))
+            if save_as is not None:
+                img.save(str(save_as))
+            img, array = numpy.array(img), numpy.array(img)
+            if display:
+                img = cv2.resize(numpy.uint8(img), (450, 450))
+                img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+                cv2.imshow("Earth Imagery",img)
+                cv2.waitKey(0)
+                cv2.destroyAllWindows()
+
+            return array, resp.url
