@@ -1,6 +1,0 @@
-API Reference
-=============
-
-.. error ::
-    nothing to see here
-
