@@ -13,6 +13,7 @@ version = '1.0.0'
 autosectionlabel_prefix_document = True
 hoverxref_auto_ref = True
 hoverxref_sphinxtabs = True
+
 extensions = [
     'sphinx.ext.duration',
     'sphinx.ext.doctest',
