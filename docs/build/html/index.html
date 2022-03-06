@@ -1,0 +1,224 @@
+
+
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>PySpace &mdash; PySpace 0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.min.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.min.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Quickstart" href="quickstart.html" /> 
+
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <a class="site-nav-toggle hidden-lg-up"><i class="icon-menu"></i></a>
+            <a class="site-title" href="#">
+                PySpace
+            </a>
+        </div>
+    </header>
+
+
+<div class="breadcrumbs-outer hidden-xs-down">
+    <div class="container">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="breadcrumbs">
+    
+      <li><a href="#">Docs</a></li>
+        
+      <li>PySpace</li>
+    
+    
+      <li class="breadcrumbs-aside">
+        
+            
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+</div>
+    </div>
+</div>
+    <div class="main-outer">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-lg-3 site-nav">
+                    
+<div role="search">
+    <form class="search" action="search.html" method="get">
+        <div class="icon-input">
+            <input type="text" name="q" placeholder="Search" />
+            <span class="icon-search"></span>
+        </div>
+        <input type="submit" value="Go" class="d-hidden" />
+        <input type="hidden" name="check_keywords" value="yes" />
+        <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+                    <div class="site-nav-tree">
+                        
+                            
+                            
+                                <p class="caption" role="heading"><span class="caption-text">Pages:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#initialization">Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#picture-of-the-day">Picture Of the Day</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pic_of_the_day.html">Picture Of the day</a></li>
+<li class="toctree-l2"><a class="reference internal" href="weather.html">Weather</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rate_limits.html">Web Service Rate Limits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rate_limits.html#demo-key-rate-limits">DEMO_KEY Rate Limits</a></li>
+</ul>
+</li>
+</ul>
+
+                            
+                        
+                    </div>
+                </div>
+                <div class="col-12 col-lg-9">
+                    <div class="document">
+                        
+                            
+  <section id="pyspace">
+<h1>PySpace<a class="headerlink" href="#pyspace" title="Permalink to this headline">¶</a></h1>
+<p>PySpace is an easy, simple but powerful library for NASA APIs.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The purpose of this library is to make the exploration of our universe fun and most importantly, easy!</p>
+</div>
+<section id="we-offer">
+<h2>We offer:<a class="headerlink" href="#we-offer" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><strong>Full coverage on the supported APIs</strong>: Currently we do not support all the <a class="reference external" href="https://api.nasa.gov/">NASA.gov</a> APIs. Although on the ones we support, we provide <strong>full</strong> coverage.</p></li>
+<li><p><strong>Extra-capable methods for result storing and visualization</strong>: We provide methods that allow external result manipulation. (For example, our earth_imagery() method lets you save the image into a directory of your desire and even returns a NumPy Array of the pixel values that opens the way for advanced image annotation using third-party libraries such as OpenCV). As we are mentioning below this helps users create awesome projects.(<strong>Visualization methods</strong> are comming soon in <code class="docutils literal notranslate"><span class="pre">v.2.0.0</span> <span class="pre">BETA</span></code>)</p></li>
+<li><p><strong>Tons of possible usages of our library</strong>: The variety of methods we offer opens the way for users to combine our library and their imagination to create awesome projects!</p></li>
+<li><p><strong>Easy to read error handling</strong>: afraid of facing errors? Not any-more! We took care of this by transforming the tracebacks and providing you straight to the point-answers!</p></li>
+<li><p><strong>Easy to read outputs</strong>: data returned from each request are really easy to read!</p></li>
+<li><p><strong>API-strict naming</strong>: we follow strictly the naming style of each endpoint from the official <a class="reference external" href="https://api.nasa.gov/">NASA.gov</a> documentation. Therefore, no more confusion for our users on what method to use.</p></li>
+</ul>
+</section>
+<section id="downsides">
+<h2>Downsides?<a class="headerlink" href="#downsides" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>As we mentioned above, we have lots to offer. Although since this project is still in BETA we do not provide full-coverage on the <a class="reference external" href="https://api.nasa.gov/">NASA.gov</a> APIs.</p></li>
+</ul>
+</section>
+<section id="where-do-i-start">
+<h2>Where do I start?<a class="headerlink" href="#where-do-i-start" title="Permalink to this headline">¶</a></h2>
+<p>Please take a look at our pages</p>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Pages:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#initialization">Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#picture-of-the-day">Picture Of the Day</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pic_of_the_day.html">Picture Of the day</a></li>
+<li class="toctree-l2"><a class="reference internal" href="weather.html">Weather</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rate_limits.html">Web Service Rate Limits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rate_limits.html#demo-key-rate-limits">DEMO_KEY Rate Limits</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+</section>
+<section id="advanced-search">
+<h1>Advanced Search<a class="headerlink" href="#advanced-search" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</section>
+
+
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+    <div class="footer" role="contentinfo">
+        <div class="container">
+            &#169; Copyright 2022, Capernicus.
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.4.0.
+        </div>
+    </div>  
+
+</body>
+</html>
