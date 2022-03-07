@@ -20,18 +20,20 @@ We offer:
 
    * - Nasa APIs
      - External APIs 
-
+    
    * - APOD 
-     - VisualCrossing Weather Data
+     -
+    
 
    * - Mars Rover Pictures  
+     -
 
    * - Image and Video Library
-
+     -
    * - Insights 
-
+     -
    * - Earth Imagery
-
+     -
 
 .. note::
    Keep in mind that this list will change overtime.
