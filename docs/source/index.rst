@@ -22,7 +22,7 @@ We offer:
      - External APIs 
     
    * - APOD 
-     -
+     - Visual Crossing Weather API
     
 
    * - Mars Rover Pictures  
