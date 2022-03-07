@@ -14,11 +14,15 @@ PySpace is an easy, simple but powerful library for NASA APIs.
 We offer:
 ***********
 - **Full coverage on the supported APIs**: Currently we do not support all the `NASA.gov <https://api.nasa.gov/>`_ APIs. Although on the ones we support, we provide **full** coverage.
-.. csv-table::
+
+.. csv-table:: Test Title
    :file: apis.csv
    :widths: 30, 70
    :header-rows: 1
 
+.. note::
+   Keep in mind that this list will change overtime.
+   - If you have any suggestions on what API we should add/remove please feel free to contact us
 
 - **Extra-capable methods for result storing and visualization**: We provide methods that allow external result manipulation. (For example, our earth_imagery() method lets you save the image into a directory of your desire and even returns a NumPy Array of the pixel values that opens the way for advanced image annotation using third-party libraries such as OpenCV). As we are mentioning below this helps users create awesome projects.(**Visualization methods** are comming soon in ``v.2.0.0 BETA``)
 
