@@ -16,7 +16,6 @@ We offer:
 - **Full coverage on the supported APIs**: Currently we do not support all the `NASA.gov <https://api.nasa.gov/>`_ APIs. Although on the ones we support, we provide **full** coverage.
 
 .. list-table:: List of supported APIs
-   :widths: 25 25 50
    :header-rows: 1
 
    * - Nasa APIs
