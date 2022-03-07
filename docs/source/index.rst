@@ -15,19 +15,24 @@ We offer:
 ***********
 - **Full coverage on the supported APIs**: Currently we do not support all the `NASA.gov <https://api.nasa.gov/>`_ APIs. Although on the ones we support, we provide **full** coverage.
 
-.. list-table:: Title
+.. list-table:: List of supported APIs
    :widths: 25 25 50
    :header-rows: 1
 
-   * - Heading row 1, column 1
-     - Heading row 1, column 2
-     - Heading row 1, column 3
-   * - Row 1, column 1
-     -
-     - Row 1, column 3
-   * - Row 2, column 1
-     - Row 2, column 2
-     - Row 2, column 3
+   * - Nasa APIs
+     - External APIs 
+
+   * - APOD 
+     - VisualCrossing Weather Data
+
+   * - Mars Rover Pictures  
+
+   * - Image and Video Library
+
+   * - Insights 
+
+   * - Earth Imagery
+
 
 .. note::
    Keep in mind that this list will change overtime.
