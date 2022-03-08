@@ -23,7 +23,8 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
     'sphinx.ext.intersphinx',
-    'karma_sphinx_theme'
+    'karma_sphinx_theme',
+    'sphinx.ext.napoleon'
 
 ]
 
