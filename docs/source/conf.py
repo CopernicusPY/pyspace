@@ -9,7 +9,7 @@ project = 'PySpace'
 copyright = '2022, Capernicus'
 author = 'Capernicus'
 
-release = '0.1'
+release = '1.0'
 version = '1.5.0'
 
 # -- General configuration
