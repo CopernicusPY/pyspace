@@ -1,5 +1,5 @@
 #Requirements for the PySpace module.
 
-cv2
+opencv
 numpy
 colorama
