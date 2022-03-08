@@ -31,10 +31,6 @@ class PySpace:
         returns a tuple of the iss position
     mars_weather
         Returns a list containing dictionaries with the temperature of each martian day (sol)
-    earth_weather
-        Description Not available as of now
-    earth_imagery
-        Description Not available as of now
 
 
     """
@@ -101,12 +97,11 @@ class PySpace:
             print(colorama.Fore.RED +
                   f"[Error] Status Code: {resp.status_code} ({resp.reason})\n[ERROR] Response: {resp.text}")
             raise requests.exceptions.HTTPError(resp.reason)
-
         else:
             self.limit_remaining = resp.headers['X-RateLimit-Remaining']
             print(colorama.Fore.GREEN +
                   f"[INFO] Request completed\n[INFO] Status Code: {resp.status_code}\n[INFO] Response:\n{colorama.Fore.WHITE + resp.text}")
-        return resp.json()
+            return resp.json()
 
     def mars_picture(self, rover: str = "Curiosity", sol=None, earth_date: str = None, camera: str = "all", page=1):
         """
@@ -409,3 +404,4 @@ class PySpace:
                 cv2.destroyAllWindows()
 
             return array, resp.url
+           
