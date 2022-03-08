@@ -53,33 +53,26 @@ class PySpace:
     def picture_of_the_day(self, date=None, hd=False, count=None):
         """
         Returns data for the NASA APOD (Astronomy Picture of the Day).
-
+        
         Parameters
         ==========
-        date: string, datetime object, default -> None
+        date: str, datetime.datetime, default -> ``None``
+            Earth date on which a photo was taken. (Must be in ``YYYY-MM-DD`` format)
         hd: bool, default -> False 
             If True returns matching high-definision image of the APOD
+
         count: integer, default -> None 
-            If specified, returns <count> random images. (Cant be specified when date != None)
+            If specified, returns ``count`` random images. (Cant be specified when date != None)
         Raises
         ======
         TypeError
-            Raised if the parameter <hd> is not boolean. 
+            Raised if the parameter ``hd`` is not boolean. 
         HTTPError
             Raised if response fails. (Status code != 200)
-
         Returns
         =======
         dict 
             Dictionary object of JSON data returned from API.
-
-        Usage Examples
-        ==============
-
-        #Initialize PySpace Class with a DEMO_KEY
-        >>> apod = PySpace() 
-        # Returns the APOD of given date (2022-01-01) with the hd URL.
-        >>> apod.picture_of_the_day('2022-01-01', hd=True) 
         """
         params = {
             "api_key": self.api_key,
@@ -109,16 +102,16 @@ class PySpace:
 
         Parameters
         ==========
-        rover: string, default -> "Curiosity"
+        rover: str, default -> ``"Curiosity"``
             Rover name to access the database
-        sol: integer, default -> None
-            Martian date that corresponds to when the image got captured. 
-        earth_date: string, default -> None 
-            Earth date that corresponds to when the image got captured
-        camera: string, default -> "all"
-            Return results from specific camera on passed Rover
+        sol: int, default -> None
+            The sol (Martian rotation or day) on which the photos were taken
+        earth_date: str, default -> None 
+            Earth date on which a photo/s was taken
+        camera: str, default -> ``"all"``
+            Return images that got captured on that specific camera. If not specified images from all cameras are returned.
         page: integer, default -> 1
-            How many pages of results to return. (25 items per page)
+             How many pages of results to return (25 items per page)
 
         Raises
         ======
@@ -127,7 +120,7 @@ class PySpace:
         ValueError
             Raised if rover specified is not one of Curiosity Opportunity Spirit or Perseverance
         HTTPError
-            Raised if response fails. (Status code != 200)
+            Raised if response fails. (When Status code is not ``200``)
 
         Returns
         =======
