@@ -1,5 +1,8 @@
 # Configuration file for the Sphinx documentation builder.
+import sys
+import os
 
+sys.path.insert(0, os.path.abspath('../..'))
 # -- Project information
 
 project = 'PySpace'
@@ -20,6 +23,7 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
     'sphinx.ext.intersphinx',
+    'sphinx.ext.napoleon',
     'karma_sphinx_theme'
 
 ]
