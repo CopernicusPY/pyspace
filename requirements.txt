@@ -1,0 +1,5 @@
+#Requirements for the PySpace module.
+
+cv2
+numpy
+colorama
