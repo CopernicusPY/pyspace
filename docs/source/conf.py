@@ -1,11 +1,14 @@
 # Configuration file for the Sphinx documentation builder.
 
-# -- Project information
 import os 
 import sys
 
-sys.path.insert(0, os.path.abspath('../..'))
+# sys.path.insert(0, os.path.abspath('../..'))
+
+# -- AutoAPI configuration settings
 autoapi_dirs = ['../../']
+autoapi_generate_api_docs = False
+# -- Project information
 project = 'PySpace'
 copyright = '2022, Capernicus'
 author = 'Capernicus'
