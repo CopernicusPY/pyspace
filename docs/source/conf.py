@@ -5,6 +5,7 @@ import os
 import sys
 
 sys.path.insert(0, os.path.abspath('../..'))
+autoapi_dirs = ['../../']
 project = 'PySpace'
 copyright = '2022, Capernicus'
 author = 'Capernicus'
