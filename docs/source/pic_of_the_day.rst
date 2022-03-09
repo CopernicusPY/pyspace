@@ -4,7 +4,7 @@
 Picture Of the day 
 ==================
 
-.. automethod:: pyspace.PySpace.picture_of_the_day
+.. autoapimethod:: pyspace.PySpace.picture_of_the_day
 
 
 
@@ -12,6 +12,5 @@ Picture Of the day
 Mars Picture 
 ============
 
-.. automethod:: pyspace.PySpace.mars_picture
     
-
+.. autoapimethod:: pyspace.PySpace.mars_picture
