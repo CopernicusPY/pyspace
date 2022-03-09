@@ -1,1 +1,2 @@
 karma_sphinx_theme
+sphinx-autoapi
