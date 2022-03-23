@@ -1,86 +1,86 @@
-{%extends 'base.html'%}
-
-{% block head %} 
+{%extends 'base.html'%} {% block head %}
 <!-- Head -->
 <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='assets/iss.png')}}" />
 <!-- Setup Map -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
-    integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
-    crossorigin="" />
-<script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
-    integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
-    crossorigin="">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==" crossorigin="" />
+<script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js" integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg==" crossorigin="">
 </script>
-<style>
-    #issMap {
-        height: 180px;
-    }
-</style>
 
 <title>PySpace ISS Tracker</title>
 
 {%endblock%}
 <!-- Body -->
 {% block body %}
-    <h1>Where is the ISS?</h1>
+<h1>Where is the ISS?</h1>
 
-    <p>
-        latitude: <span id="lat"></span>°<br />
-        longitude: <span id="lon"></span>°
-    </p>
+<p>
+    latitude: <span id="lat"></span>°<br /> longitude: <span id="lon"></span>°
+</p>
 
-    <div id="issMap"></div>
+<div id="issMap"></div>
 
+<div class="footer">
+    <!-- Github-->
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill:white;"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-4.466 19.59c-.405.078-.534-.171-.534-.384v-2.195c0-.747-.262-1.233-.55-1.481 1.782-.198 3.654-.875 3.654-3.947 0-.874-.312-1.588-.823-2.147.082-.202.356-1.016-.079-2.117 0 0-.671-.215-2.198.82-.64-.18-1.324-.267-2.004-.271-.68.003-1.364.091-2.003.269-1.528-1.035-2.2-.82-2.2-.82-.434 1.102-.16 1.915-.077 2.118-.512.56-.824 1.273-.824 2.147 0 3.064 1.867 3.751 3.645 3.954-.229.2-.436.552-.508 1.07-.457.204-1.614.557-2.328-.666 0 0-.423-.768-1.227-.825 0 0-.78-.01-.055.487 0 0 .525.246.889 1.17 0 0 .463 1.428 2.688.944v1.489c0 .211-.129.459-.528.385-3.18-1.057-5.472-4.056-5.472-7.59 0-4.419 3.582-8 8-8s8 3.581 8 8c0 3.533-2.289 6.531-5.466 7.59z"/></svg>
+    <a href="https://github.com/CapernicusPY/pyspace/">Github</a>
+</div>
+<script>
+    // Popup onclick displaying cursor irl position
+    function onMapClick(e) {
+        var popup = L.popup()
+        popup
+            .setLatLng(e.latlng)
+            .setContent("You clicked the map at " + e.latlng.toString().slice(6))
+            .openOn(map);
+    }
 
-    <script>
-        function onMapClick(e) {
-            var popup = L.popup()
-            popup
-                .setLatLng(e.latlng)
-                .setContent("You clicked the map at " + e.latlng.toString().slice(6))
-                .openOn(map);
+    // Define/Configure the map and add its tiles.
+    const map = L.map('issMap').setView([0, 0], 1);
+    const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+
+    const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+    const tiles = L.tileLayer(tileUrl, {
+        attribution
+    }).addTo(map)
+
+    // tiles.addTo(map);
+
+    // Making a marker with a custom icon
+    const issIcon = L.icon({
+        iconUrl: "{{ url_for('static', filename='assets/iss.png')}}",
+        iconSize: [50, 32],
+        iconAnchor: [25, 16]
+    });
+
+    const marker = L.marker([0, 0], {
+        icon: issIcon
+    }).addTo(map);
+    map.on('click', onMapClick);
+
+    let firstTime = true;
+
+    async function getISS() {
+        const response = await fetch("https://api.wheretheiss.at/v1/satellites/25544");
+        const data = await response.json();
+        const {
+            latitude,
+            longitude
+        } = data;
+        console.log(latitude, longitude)
+
+        marker.setLatLng([latitude, longitude]);
+        if (firstTime) {
+            map.setView([latitude, longitude], 2);
+            firstTime = false;
         }
+        document.getElementById('lat').textContent = latitude.toFixed(2);
+        document.getElementById('lon').textContent = longitude.toFixed(2);
+    }
 
-        // Making a map and tiles
-        const map = L.map('issMap').setView([0, 0], 1);
-        const attribution =
-            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
-
-        const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-        const tiles = L.tileLayer(tileUrl, { attribution });
-        tiles.addTo(map);
-
-        // Making a marker with a custom icon
-        const issIcon = L.icon({
-            iconUrl: "{{ url_for('static', filename='assets/iss.png')}}",
-            iconSize: [50, 32],
-            iconAnchor: [25, 16]
-        });
-
-        const marker = L.marker([0, 0], { icon: issIcon }).addTo(map);
-        map.on('click', onMapClick);
-
-        let firstTime = true;
-
-        async function getISS() {
-            const response = await fetch("https://api.wheretheiss.at/v1/satellites/25544");
-            const data = await response.json();
-            const { latitude, longitude } = data;
-            console.log(latitude, longitude)
-
-            marker.setLatLng([latitude, longitude]);
-            if (firstTime) {
-                map.setView([latitude, longitude], 2);
-                firstTime = false;
-            }
-            document.getElementById('lat').textContent = latitude.toFixed(2);
-            document.getElementById('lon').textContent = longitude.toFixed(2);
-        }
-
-        getISS();
-
-        setInterval(getISS, 1000);
-    </script>
+    getISS();
+    // Update the function every 1 sec.
+    setInterval(getISS, 1000);
+</script>
 
 
 {%endblock%}
