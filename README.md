@@ -1,27 +1,17 @@
 # Pyspace
-PySpace is an easy-to-use open-source NASA API Wrapper. Nasa developed a few apis to help the developers explore our world and even better, the space! \
-This wrapper currently supports Earth API, APOD(Astronomical Pictures of the Day) API, and also Mars Rover Photos API.
+PySpace is an easy-to-use open-source NASA API Wrapper. Nasa developed a few apis to help the developers explore our world and even better, the space!
 
-> For more information about each API please visit https://api.nasa.gov/
-> To generate an API Key visit https://api.nasa.gov/. (It is not required but recommended. By default we use the "DEMO_KEY")
+### What do we offer?
 
-# Installation
+* [x] **Full coverage on the supported APIs:** Currently we do not support all the [NASA.gov](api.nasa.gov) APIs. Although on the ones we support, we provide **full** coverage.
 
->:warning: This wrapper is not a package as of now. So please store this repository to your projects directory\
+* [x] **Extra-capable methods for result storing and visualization:** We provide methods that allow external result manipulation. (For example, our earth_imagery() method lets you save the image into a directory of your desire and even returns a NumPy Array of the pixel values that opens the way for advanced image annotation using third-party libraries such as OpenCV). As we are mentioning below this helps users create awesome projects.(**Visualization methods** are comming soon in `v.2.0.0 BETA`)
+* [x] **Easy to read error handling:** afraid of facing errors? Not any-more! We took care of this by transforming the tracebacks and providing you straight to the point-answers!
 
-**Firstly git clone the repository** 
->:warning: Remember to use cd to change your directory to a dir you prefer before git cloning.
+* [x] **Easy to read outputs:** data returned from each request are really easy to read!
 
-`git clone https://github.com/CapernicusPY/pyspace/`
-# Usage
-Firstly, import the module. (Keep in mind the setup of this repo is not that good (will be changed soon) so you install all the different modules for all the different apis. 
-```py
-#Import APOD Module Example
-from pyspace import PySpace
-```
-After that, initialize the module while specifying the API_KEY(Can be None since default is "DEMO_KEY")
-```py
-apod = PySpace("API_KEY") # Initialize module using api key from https://api.nasa.gov/
-apod = PySpace() # Initialize module using demo key
-```
-Documentation: https://beta-pyspace.readthedocs.io
+* [x] **Tons of possible usages:** The variety of methods we offer opens the way for users to combine our library and their imagination to create awesome projects!
+* [x] **API-strict naming:** We follow strictly the naming style of each endpoint from the official [NASA.gov](api.nasa.gov) documentation. Therefore, no more confusion for our users on what method to use.
+
+For more information about this project, please take a look at the [documentation](https://beta-pyspace.readthedocs.io).
+
