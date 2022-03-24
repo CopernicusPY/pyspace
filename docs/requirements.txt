@@ -1,3 +1,5 @@
 karma_sphinx_theme
 Sphinx
 sphinx-hoverxref
+colorama
+numpy
