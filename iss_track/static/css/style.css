@@ -1,12 +1,12 @@
 body {
     background-color: #121212;
+    color: white;
 }
 
-p {
+.location {
     position: absolute;
     width: 10%;
     top: 265px;
-    color: white;
     font-family: fantasy;
     font-size: 1.1vw;
     border: 4px solid white;
@@ -14,11 +14,10 @@ p {
     padding: 2.2vh;
 }
 
-h1 {
+.title {
     font-size: 5vw;
     width: max-content;
     margin: auto;
-    color: white;
     font-family: fantasy;
 }
 
@@ -29,15 +28,50 @@ h1 {
 }
 
 .footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
     width: 100vw;
-    height: 10vh;
+    background-color: #222222;
     font-family: fantasy;
-    font-size: 1.5vw;
-    position: absolute;
-    bottom: 0px;
-    background-color: #222222
+    font-size: 1.2vw;
 }
 
-.footer svg {
-    position: relative;
+body {
+    background-color: #121212;
+    color: white;
+}
+
+.error-text-container {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 1.5vw;
+    line-height: 5px;
+    letter-spacing: 2px;
+    margin: auto;
+    width: max-content;
+    padding: 10px;
+    text-align: center;
+    transform: translateY(40vh)
+}
+
+.error-text-container button {
+    border: 0px solid rgb(17, 218, 218);
+    border-radius: 25px;
+    background-color: rgb(17, 218, 218);
+    font-size: 1.8vw;
+    color: white;
+    cursor: pointer;
+    transition: all .2s ease-in-out;
+    /* Prevent text selection */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.error-text-container button:hover {
+    transform: scale(1.1);
+    background-color: rgb(13, 158, 158)
 }
