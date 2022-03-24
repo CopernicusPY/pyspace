@@ -5,7 +5,7 @@ import sys
 
 #For real idk what the fuck is going on im just trying wrong paths since nothing does work
 
-sys.path.insert(0, os.path.abspath('../../..'))
+sys.path.insert(0, os.path.abspath('../..'))
 
 # -- AutoAPI configuration settings
 # autoapi_dirs = ['../../']
@@ -23,11 +23,7 @@ extensions = [
     'sphinx.ext.autodoc',
     'karma_sphinx_theme',
     'sphinx.ext.napoleon',
-    'hoverxref.extension'
-#     'autoapi.extension'
-
 ]
-
 
 
 # -- Options for HTML output
