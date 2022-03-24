@@ -3,3 +3,5 @@ Sphinx
 sphinx-hoverxref
 colorama
 numpy
+opencv-python
+pillow
