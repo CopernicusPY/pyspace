@@ -1,0 +1,14 @@
+{%extends 'base.html' %} {% block head %}
+<!-- Head -->
+<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+<title>Error 404</title>
+
+{%endblock%} {% block body %}
+<form action="/" class="error-text-container">
+    <h1>Looks like you're lost!</h1>
+    <p>The page you requested for doesn't exist.</p>
+
+    <button class="return-btn" type="submit"><strong>< Back</strong></button>
+</form>
+
+{%endblock%}
