@@ -1,4 +1,4 @@
-.. currentmodule:: pyspace.py
+.. currentmodule:: pyspace
     
 
 Picture Of the day 
