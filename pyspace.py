@@ -83,7 +83,7 @@ class PySpace:
         if hd is not None:
             if not isinstance(hd, bool):
                 raise TypeError(
-                    colorama.Fore.RED+"<hd> parameter must be a Boolean (True - False)")
+                    colorama.Fore.RED+"[Error] <hd> parameter must be a Boolean (True - False)")
         resp = requests.get(
             "https://api.nasa.gov/planetary/apod", params=params)
         if resp.status_code != 200:
@@ -134,17 +134,17 @@ class PySpace:
         }
         if rover.lower() not in ('curiosity', 'opportunity', 'spirit', 'perseverance'):
             raise ValueError(
-                colorama.Fore.RED+"<rover> must be one of the following: Curiosity, Opportunity, Spirit, Perseverance")
+                colorama.Fore.RED+"[Error] <rover> must be one of the following: Curiosity, Opportunity, Spirit, Perseverance")
         if earth_date != None and sol != None:
             raise TypeError(
-                colorama.Fore.RED+"Bad combination. Either <earth_date> or <sol> can be specified")
+                colorama.Fore.RED+"[Error] Bad combination. Either <earth_date> or <sol> can be specified")
         if camera != "all":
             params['camera'] = camera
         if sol != None:
             params['sol'] = sol
         if earth_date != None:
             if not isinstance(earth_date, (str, datetime.datetime)):
-                raise TypeError("Earth date must be in YYYY-MM-DD format.")
+                raise TypeError("[Error] Earth date must be in YYYY-MM-DD format.")
             elif isinstance(earth_date, datetime.datetime):
                 earth_date = earth_date.strftime("%Y-%m-%d")
             params['earth_date'] = earth_date
@@ -228,19 +228,23 @@ class PySpace:
 
         Parameters
         ==========
+
         version: integer, default -> 1.0
             Version of the Insights(Mars Weather Data) API
+
         Raises
         ======
+
         HTTPError
-            Raised if response fails. (Status code != 200)
+            Raised if response fails. (When Status code is not ``200``)
         TypeError
-            Raised if <version> argument is not an integer
+            Raised if ``<version>`` argument is not an integer
 
         Returns
         =======
-        list
-            List object containing dictionaries with data for each sol.(sol, average temp, min temp and max temp)
+
+        list[dict, ...]
+            List object containing dictionaries with data for each sol.(sol, average temp, min temp and max temp) in Celcius.
 
         """
         params = {
@@ -275,18 +279,45 @@ class PySpace:
             return result
 
     def earth_weather(self, location, ugroup="us", start_date='', end_date='', c_type="json"):
+        """
+        Returns information about the weather of a location in the specified date range, with the specified content type (csv, json etc.).
+
+        Parameters
+        ==========
+        location: str
+        ugroup: str
+        start_date: str
+        end_date: str
+        c_type: str
+
+        Raises
+        ======
+
+        HTTPError
+            Raised if response fails. (When Status code is not ``200``)
+        TypeError
+            Raised if ``<location>``, ``<ugroup>``, ``<start_date>``, ``<end_date`` or ``<c_type`` are not ``str``
+        TypeError
+            Raised if self.weather_api_key is ``None``
+        Returns
+        =======
+
+        dict
+            Dictionary object with JSON data containing information about the weather of the specified location on the specified date range (``start_date`` - ``end_date``)
+        """
         if self.weather_api_key is not None:
             for i in [location, ugroup, start_date, end_date, c_type]:
                 if not isinstance(i, str):
-                    raise TypeError(f"Expected <class 'str'> got {type(i)}")
+                    raise TypeError(f"[Error] Expected <class 'str'> got {type(i)}")
                 
             params = {
                 "key": self.weather_api_key,
                 "unitGroup": ugroup,
                 "contentType": c_type,
                 "include": "days",
-
             }
+            if start_date != '': params["StartDate"] = start_date 
+            if end_date != '': params["EndDate"] = end_date
 
             resp = requests.get(
                 f'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/{location}/{start_date}/{end_date}', params=params)
@@ -301,7 +332,7 @@ class PySpace:
                 return resp.json()
 
         else:
-            print("No API Key")
+            raise TypeError("[Error] <weather_api_key> is missing.")
         #API_KEY = ZDJ7P2WBY2KEZ7A3LHNMDZGLK
     def earth_imagery(self, lat, lon, dim=0.025, date=None,display=True, cloud_score=False, save_as=None):
         """
@@ -347,21 +378,21 @@ class PySpace:
         """
         #Argument Error Handling
         if not isinstance(cloud_score, bool):
-            raise TypeError('<cloud_score> must be boolean')
+            raise TypeError('[Error] <cloud_score> must be boolean')
         if not isinstance(lat, (int, float)):
-            raise TypeError('<lat> must be an int or float')
+            raise TypeError('[Error] <lat> must be an int or float')
         if not isinstance(lon, (int, (int,float))):
-            raise TypeError('<lon> must be an int or float')
+            raise TypeError('[Error] <lon> must be an int or float')
         if not isinstance(dim, (float, int)):
-            raise TypeError('<dim> must be a int or float')
+            raise TypeError('[Error] <dim> must be a int or float')
 
         if not -90 <= lat <= 90:
-            raise ValueError('latitudes range from -90 to 90')
+            raise ValueError('[Error] latitudes range from -90 to 90')
         if not -180 <= lon <= 180:
-            raise ValueError('longitudes range from -180 to 180')
+            raise ValueError('[Error] longitudes range from -180 to 180')
         if date is not None:
             if not isinstance(date, (str, datetime.datetime)):
-                raise TypeError('date must be either a string representing a date in YYYY-MM-DD format or a datetime object')
+                raise TypeError('[Error] date must be either a string representing a date in YYYY-MM-DD format or a datetime object')
             if isinstance(date, datetime.datetime):
                 date = date.strftime('%Y-%m-%d')
 
@@ -398,3 +429,20 @@ class PySpace:
 
             return array, resp.url
            
+    def nasa_library(self, query="moon", nasa_id=None, mode="search"):
+        
+        if mode in ["search", "asset", "metadata", "captions"]:
+            endpoint = mode
+        else: 
+            raise ValueError(colorama.Fore.RED + f'[Error] <mode> must be one of {colorama.Fore.WHITE + str(["search", "asset", "metadata", "captions"])}')
+
+        resp = requests.get(f"https://images-api.nasa.gov/{endpoint}", params={"q":query} if mode == "search" else nasa_id)
+        
+        if resp.status_code != 200:
+            print(colorama.Fore.RED + f"[Error] Status Code: {resp.status_code} ({resp.reason})\n[ERROR] Response: {resp.text}")
+            raise requests.exceptions.HTTPError(resp.reason)
+        else:
+            print(colorama.Fore.GREEN +
+                f"[INFO] Request completed\n[INFO] Status Code: {resp.status_code}\n[INFO] Response: {colorama.Fore.WHITE + str(resp.text)}\n\n[INFO] Response URL: {colorama.Fore.WHITE + resp.url}")
+            
+            return (resp.json(), resp.url)
