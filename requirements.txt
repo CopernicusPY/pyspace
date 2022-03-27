@@ -1,0 +1,6 @@
+#Requirements for the PySpace module.
+
+opencv-python
+numpy
+colorama
+pillow
