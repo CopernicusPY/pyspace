@@ -1,6 +1,6 @@
 ---
 created: 2022-03-27T23:38:04+03:00
-modified: 2022-03-27T23:50:12+03:00
+modified: 2022-04-09T15:50:43+03:00
 ---
 
 # PySpace ISS Tracking
@@ -9,5 +9,5 @@ This mini-project is a website made with [python flask](https://flask.palletspro
 
 To deploy the website to your local network, just run the [app.py]().The website will run on your localhost on the port 5000. (`127.0.0.1:5000`)
 
-As of now this site shows a **self-updating** [leaflet.js](https://leafletjs.com/) map with a custom pointer which is a vector img of the **ISS**.
+As of now this site shows a [leaflet.js](https://leafletjs.com/) map with a custom pointer that represents the **ISS** (it's location changes live).
 It also gives you its exact `lat` and `lon` location.
