@@ -8,20 +8,23 @@ Installation
 
 To use PySpace , first install it using git: 
 
+.. warning:: 
+   Make sure to git clone PySpace in the directory of your project.
+
 .. code-block:: console
 
    (.venv) $ git clone https://github.com/CapernicusPY/pyspace
 
-.. warning:: 
-   Make sure to git clone PySpace in the directory of your project.
+.. code-block:: console 
+   (.venv) $ pip install -r requirements.txt
 
-Your project structure should look like this after installation::
+Your project structure should look like this after the installation::
 
    ├── my_first_project
    │   ├── pyspace
 
 
-Now, make sure to create a ``main.py`` file. This file is self-explanatory, it will be our main file for this quickstart project.
+Now, create a ``main.py`` file. This file is self-explanatory, it will be our main file for this quickstart project.
 
 Initialization
 --------------
@@ -37,14 +40,14 @@ In the ``main.py``:
 
    nasa = pyspace.PySpace()
 
-Congrats! Now you are ready to explore our universe. Before that tho, lets do a quick recap!
+Congrats! Now you are ready to explore our universe. Before that, lets do a quick recap!
 We git cloned pyspace to our project folder, we created a ``main.py`` file and inside it we initialized pyspace.
 
 Picture Of the Day
 ------------------
 
 NASA's rovers and satellites take pictures of the space every single day!. 
-Now you will learn how to retrieve this pictures by yourself.
+Now you will learn how to fetch this pictures by yourself.
 Inside your ``main.py`` file, simply type:
 
 .. code-block:: python
@@ -84,8 +87,8 @@ The output, should look something like this:
 
 .. image:: 
    https://i.gyazo.com/1afba7f8019752ab3def0992041935d4.png
-
 (Output content may vary)
+
 You can also **customize** the output to your needs. But we will not focus on that since this is the quickstart. 
 
 | for more information, take a look at the :ref:`api reference <api>`
