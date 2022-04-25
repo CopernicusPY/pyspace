@@ -16,8 +16,8 @@ To use PySpace , first install it using git:
 
    (.venv) $ git clone https://github.com/CapernicusPY/pyspace
 
-
 .. code-block:: console 
+
    (.venv) $ pip install -r requirements.txt
 
 Your project structure should look like this after the installation::
