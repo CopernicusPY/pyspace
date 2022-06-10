@@ -14,9 +14,3 @@ PySpace is an easy-to-use open-source NASA API Wrapper. Nasa developed a few api
 * [x] **API-strict naming:** We follow strictly the naming style of each endpoint from the official [NASA.gov](api.nasa.gov) documentation. Therefore, no more confusion for our users on what method to use.
 
 For more information about this project, please take a look at the [documentation](https://beta-pyspace.readthedocs.io).
-
-### ToDo
-* [x] Get auto-documentation to work
-* [x] Add a `nasa_search` method & * [ ] add documentation for it
-* [ ] 
-[====------] 40% Re-design the iss_track page. 
