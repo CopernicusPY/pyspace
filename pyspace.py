@@ -446,3 +446,6 @@ class PySpace:
                 f"[INFO] Request completed\n[INFO] Status Code: {resp.status_code}\n[INFO] Response: {colorama.Fore.WHITE + str(resp.text)}\n\n[INFO] Response URL: {colorama.Fore.WHITE + resp.url}")
             
             return (resp.json(), resp.url)
+
+if __name__ == "__main__":
+    nasa = PySpace()

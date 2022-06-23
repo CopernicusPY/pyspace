@@ -1,8 +1,3 @@
----
-created: 2022-03-27T23:38:04+03:00
-modified: 2022-04-09T15:50:43+03:00
----
-
 # PySpace ISS Tracking
 
 This mini-project is a website made with [python flask](https://flask.palletsprojects.com/en/2.0.x/). It is using the [open-notify API](http://open-notify.org/) and its a small **ISS** tracker.
