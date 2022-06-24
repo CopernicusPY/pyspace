@@ -1,4 +1,4 @@
-# Pyspace
+# Pyspace ![Version](https://img.shields.io/badge/version-BETA-green)
 PySpace is an easy-to-use open-source NASA API Wrapper. Nasa developed a few apis to help the developers explore our world and even better, the space!
 
 ### What do we offer?
