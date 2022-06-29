@@ -1,3 +1,8 @@
+# Update
+
+This project never really gained any big attention although I still think it is a nice project to have. I think it is a really usefull module. I am working on a last update that will allow users to fully customize the output to their needs. After that, this repo will most likely not be maintained. It will not be archived in case someone still wants to use it. If you find a bug or want to contribute in any way, feel free to open an issue, I will certainly read it and answer to you as soon as possible. Thanks
+
+
 # Pyspace ![Version](https://img.shields.io/badge/version-BETA-green)
 PySpace is an easy-to-use open-source NASA API Wrapper. Nasa developed a few apis to help the developers explore our world and even better, the space!
 
